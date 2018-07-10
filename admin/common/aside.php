@@ -1,7 +1,11 @@
+<?php
+require_once $_SERVER['DOCUMENT_ROOT'] . "/functions.php";
+$now_user = get_now_user();
+?>
 <div class="aside">
     <div class="profile">
-        <img class="avatar" src="/static/uploads/avatar.jpg">
-        <h3 class="name">布头儿</h3>
+        <img class="avatar" src="<?php echo $now_user['avator']?>">
+        <h3 class="name"><?php echo $now_user['nick_name']?></h3>
     </div>
     <ul class="nav">
         <?php $posts_menu = array('/admin/posts.php','/admin/post-add.php','/admin/categories.php');?>
