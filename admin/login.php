@@ -7,16 +7,20 @@ require_once '../config.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     login();
 }
+// 退出登录
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'logout'){
+    unset($_SESSION['now_user']);
+}
 function login()
 {
     //1.接收表单信息并校验
     //2.持久化
     //3.响应
-    if (isset($email)) {
+    if (empty($_POST['email'])) {
         $GLOBALS['msg'] = '请填写邮箱';
         return;
     }
-    if (isset($password)) {
+    if (empty($_POST['password'])) {
         $GLOBALS['msg'] = '请填写密码';
         return;
     }
@@ -87,16 +91,28 @@ function login()
     $(function () {
         // 匹配邮箱的正则表达式
         var emailRegular = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/;
+        // 避免重复获取jQ对象
+        var jQ_email = $("#email");
+        // 保存输入框值的变量
+        var v = jQ_email.val();
         // 用户输入邮箱后，页面展示邮箱对应的头像
-        $("#email").on("blur",function () {
-            var v = $(this).val();
-            // 如果邮箱输入框内容为空，则return
-            if (!v || !emailRegular.test(v)) {
+        // 输入框失去焦点事件
+        jQ_email.on("blur",function () {
+            // 获取输入框中输入的值
+            var now_v = jQ_email.val();
+            // 如果输入框中的值没有改变,则return
+            if (now_v === v) {
+                return;
+            } else {
+                v = now_v;
+            }
+            // 如果邮箱输入框内容为空或者不匹配正则，则return
+            if (!now_v || !emailRegular.test(now_v)) {
                 return;
             }
             <!--进度条开始-->
             NProgress.start()
-            $.get('/admin/api/avator.php',{ email:v },function (response) {
+            $.get('/admin/api/api.php',{ email:v,field:"avator" },function (response) {
                 if (!response) { return; }
                 // 淡出完成后，在回调函数中，图片加载完成后淡入
                 $(".avatar").fadeOut(function () {
