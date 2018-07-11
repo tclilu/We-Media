@@ -76,12 +76,12 @@ function execute($sql){
 }
 
 /**
- * 释放资源、关闭连接
+ * 释放资源、关闭连接、屏蔽Warning
  * @param $query_result 查询结果集
  * @param $conn 数据库连接对象
  */
 function close_mysql_conn($query_result,$conn){
     // 释放资源、关闭连接
-    mysqli_free_result($query_result);
-    mysqli_close($conn);
+    @mysqli_free_result($query_result);
+    @mysqli_close($conn);
 }
