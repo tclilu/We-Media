@@ -67,7 +67,11 @@ function login()
     <!--使用novalidate属性禁止客户端表单元素自动校验，设置autocomplete属性禁用浏览器缓存历史记录-->
     <form class="login-wrap <?php echo isset($msg)?'shake animated':'';?>" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" novalidate autocomplete="off">
         <img class="avatar" src="/static/assets/img/default.png">
-        <!-- 有错误信息时展示 -->
+		<!-- jQuery控制 有错误信息时展示 -->
+		<div class="alert alert-danger" style="display:none;">
+                <strong>错误！</strong> 该用户不存在！
+        </div>
+        <!-- php控制 有错误信息时展示 -->
         <?php if (isset($msg)) { ?>
             <div class="alert alert-danger">
                 <strong>错误！</strong> <?php echo $msg; ?>
@@ -112,8 +116,12 @@ function login()
             }
             <!--进度条开始-->
             NProgress.start()
-            $.get('/admin/api/api.php',{ email:v,field:"avator" },function (response) {
-                if (!response) { return; }
+            $.get('/admin/api/user.php',{ email:v,field:"avator" },function (response) {
+                if (!response) {
+					$("form:first").addClass("shake animated");
+					$(".alert").show();
+					// $(".avatar").show();
+				}
                 // 淡出完成后，在回调函数中，图片加载完成后淡入
                 $(".avatar").fadeOut(function () {
                     $(this).on("load",function () {

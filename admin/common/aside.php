@@ -22,7 +22,7 @@ $now_user = get_now_user();
                 <li <?php echo $_SERVER['PHP_SELF'] === '/admin/categories.php'?'class="active"':'';?>><a href="categories.php">分类目录</a></li>
             </ul>
         </li>
-        <li <?php echo $_SERVER['PHP_SELF'] === '/admin/comments.php'?'class="active"':'';?>>
+        <li <?php echo $_SERVER['PHP_SELF'] === '/admin/commentsAPI.php'?'class="active"':'';?>>
             <a href="comments.php"><i class="fa fa-comments"></i>评论</a>
         </li>
         <li <?php echo $_SERVER['PHP_SELF'] === '/admin/users.php'?'class="active"':'';?>>

@@ -1,0 +1,99 @@
+#loading{
+    display: none;
+    /*居中开始*/
+    align-items: center;
+    justify-content: center;
+    /*居中结束*/
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 999;
+}
+.multi-ball {
+    animation-duration: 10s;
+    animation-iteration-count: infinite;
+    animation-name: multi-ball-fullrotate;
+    animation-timing-function: linear;
+}
+.multi-ball > div {
+    position: absolute;
+    background-color: #333;
+    transform: translateX(-50%) translateY(-50%);
+    border-radius: 50%;
+    animation-duration: 3s;
+    animation-direction: alternate;
+    animation-iteration-count: infinite;
+    animation-name: multi-ball-loader;
+    animation-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.multi-ball > div:nth-child(1) {
+    width: 40px;
+    height: 40px;
+    animation-delay: 0s;
+}
+
+.l.multi-ball > div:nth-child(2) {
+    width: 60px;
+    height: 60px;
+    animation-delay: -0.50s;
+}
+
+.multi-ball > div:nth-child(3) {
+    width: 80px;
+    height: 80px;
+    animation-delay: -1.00s;
+}
+
+.multi-ball > div:nth-child(4) {
+    width: 100px;
+    height: 100px;
+    animation-delay: -1.50s;
+}
+
+.multi-ball > div:nth-child(5) {
+    width: 120px;
+    height: 120px;
+    animation-delay: -2.00s;
+}
+
+.multi-ball > div:nth-child(6) {
+    width: 140px;
+    height: 140px;
+    animation-delay: -2.50s;
+}
+
+.multi-ball > div:nth-child(7) {
+    width: 160px;
+    height: 160px;
+    animation-delay: -3.00s;
+}
+
+@keyframes multi-ball-loader {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-50%) rotate(0);
+    }
+    50% {
+        opacity: 0.7;
+    }
+    100% {
+        opacity: 0;
+        background-color: #333;
+        transform: translateX(-50%) translateY(-50%) rotateX(180deg) rotate(360deg);
+    }
+}
+
+@keyframes multi-ball-fullrotate {
+    0% {
+        -moz-transform: rotate(0);
+        transform: rotate(0);
+    }
+    100% {
+        -moz-transform: rotate(-360deg);
+        transform: rotate(-360deg);
+    }
+}

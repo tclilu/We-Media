@@ -12,7 +12,7 @@ if ("add" === $action && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = isset($_GET['id']) ? $_GET['id'] : '';
     if (!empty($id)) {
         // 显示当前id对应分类的信息
-        $category_ById = category_findById($id);
+        $category_ById = show_categoryById($id);
     } else {
         exit("参数错误!");
     }
@@ -43,7 +43,7 @@ function show() {
 
 /**
  * @param $id 当前分类对应id
- * @return array|null 返回当前id对应的分类
+ * @return array|null 返回当前id对应的分类信息
  */
 function show_categoryById($id) {
     return fetch_one("select * from categories where id={$id};");
@@ -133,7 +133,7 @@ function edit_category($method,$id='') {
             <div class="col-md-8">
                 <div class="page-action">
                     <!-- show when multiple checked -->
-                    <a id="del_cate" class="btn btn-danger btn-sm" href="/admin/category_del.php" style="display: none">批量删除</a>
+                    <a id="del_all" class="btn btn-danger btn-sm" href="/admin/category_del.php" style="display: none">批量删除</a>
                 </div>
                 <table class="table table-striped table-bordered table-hover">
                     <thead>
@@ -177,32 +177,7 @@ function edit_category($method,$id='') {
 <?php include "./common/aside.php"; ?>
 <script src="/static/assets/vendors/jquery/jquery.js"></script>
 <script src="/static/assets/vendors/bootstrap/js/bootstrap.js"></script>
-<script>
-    $(function () {
-        // 提示信息显示5秒自动消失
-        $(".alert").fadeOut(5000);
-        // 初始化复选框数据数组
-        var dataArray = [];
-        // 避免多次重复获取元素
-        var del_btn = $("#del_cate");
-        $("tbody input").on("change", function () {
-            // 根据HTML5元素自定义属性获取对应分类的id
-            var id = $(this).data("id");
-            // 如果选中则将id加入数组，取消选中则从数组中删除
-            if ($(this).prop("checked")) {
-                // 加入数组
-                dataArray.push(id);
-            } else {
-                // 移出id对应下标的数组元素，移除1个元素
-                dataArray.splice(dataArray.indexOf(id), 1);
-            }
-            // 如果数组长度为0，则不显示批量删除按钮，否则显示。
-            (dataArray.length == 0) ? del_btn.fadeOut() : del_btn.fadeIn();
-            // 动态修改按钮链接地址
-            del_btn.prop("search", "?id=" + dataArray);
-        });
-    });
-</script>
+<script src="/static/assets/js/checkbox.js"></script>
 <script>NProgress.done()</script>
 </body>
 </html>

@@ -148,7 +148,7 @@ function show_all_users() {
             <div class="col-md-8">
                 <div class="page-action">
                     <!-- show when multiple checked -->
-                    <a id="del_users" class="btn btn-danger btn-sm" href="/admin/user_del.php" style="display: none">批量删除</a>
+                    <a id="del_all" class="btn btn-danger btn-sm" href="/admin/user_del.php" style="display: none">批量删除</a>
                 </div>
                 <table class="table table-striped table-bordered table-hover">
                     <thead>
@@ -176,7 +176,7 @@ function show_all_users() {
                                 <td><?php if ($v['user_status'] === 'unactivated') {
                                         echo "未激活";
                                     } elseif ($v['user_status'] === 'activated') {
-                                        echo "激活";
+                                        echo "已激活";
                                     } elseif ($v['user_status'] === 'forbidden') {
                                         echo "禁用";
                                     } elseif ($v['user_status'] === 'trashed') {
@@ -200,8 +200,6 @@ function show_all_users() {
 <script src="/static/assets/vendors/bootstrap/js/bootstrap.js"></script>
 <script>
     $(function () {
-        // 提示信息5秒淡出效果
-        $(".alert").fadeOut(5000);
         // 当邮箱输入框失去焦点,对输入的邮箱数据进行校验,
         // 1.常规正则校验
         // 匹配邮箱的正则表达式
@@ -226,7 +224,7 @@ function show_all_users() {
             }
             <!--进度条开始-->
             NProgress.start();
-            $.get('/admin/api/api.php', {email: now_v, field: "email"}, function (response) {
+            $.get('/admin/api/user.php', {email: now_v, field: "email"}, function (response) {
                 <!--进度条结束-->
                 NProgress.done();
                 if (!response) {
@@ -240,29 +238,9 @@ function show_all_users() {
                 }
             });
         });
-        // 初始化复选框数据数组
-        var dataArray = [];
-        // 避免重复获取jQ对象
-        var del_btn = $("#del_users");
-        // 每有一个checkbox被选中,将对应用户id存入dataArray数组中
-        $("tbody input").on("change", function () {
-            // 根据HTML自定义属性获取对应user的id
-            var id = $(this).data("id");
-            // 如果被选中则加入数组,取消选中则移出数组
-            if ($(this).prop("checked")) {
-                dataArray.push(id);
-            } else {
-                // 第一个参数：移出id对应下标的数组元素
-                // 第二个参数：移出一个元素
-                dataArray.splice(dataArray.indexOf(id), 1);
-            }
-            // 动态显示批量删除按钮 根据dataArray数组长度是否为0确定
-            (dataArray.length == 0) ? del_btn.fadeOut() : del_btn.fadeIn();
-            // 动态修改批量删除按钮超链接地址
-            del_btn.prop("search", "?id=" + dataArray);
-        });
     });
 </script>
+<script src="/static/assets/js/checkbox.js"></script>
 <script>NProgress.done();</script>
 </body>
 </html>
